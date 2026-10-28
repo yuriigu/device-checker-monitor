@@ -28,9 +28,9 @@ Tecnologias utilizadas
 
 O projeto foi desenvolvido utilizando as seguintes tecnologias:
 
-* Backend: [Tecnologia/Framework]
-* Frontend: [Tecnologia/Framework]
-* Banco de Dados: [Banco de Dados]
+* Backend: Java
+* Frontend: Angular
+* Banco de Dados: PostgreSQL
 
 
 Primeiros passos
