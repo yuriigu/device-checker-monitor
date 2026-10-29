@@ -12,10 +12,10 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY) //Identity deixa o BD lidar com o autoincremento do registro
     private Long id;
 
-    @Column(name = "name", length = 255)
+    @Column(name = "name", length = 255, unique = true)
     private String name;
 
-    @Column(name = "email", length = 255)
+    @Column(name = "email", length = 255, unique = true)
     private String email;
 
     @Column(name = "password", length = 255)
