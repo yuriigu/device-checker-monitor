@@ -7,12 +7,7 @@ import br.checker.monitor.dto.DeviceRoleResponse;
 import br.checker.monitor.dto.DeviceSummaryResponse;
 import br.checker.monitor.exception.BusinessRuleException;
 import br.checker.monitor.exception.ResourceNotFoundException;
-import br.checker.monitor.model.Brand;
-import br.checker.monitor.model.Device;
-import br.checker.monitor.model.DeviceModel;
-import br.checker.monitor.model.DeviceRole;
-import br.checker.monitor.model.DeviceRoleId;
-import br.checker.monitor.model.Role;
+import br.checker.monitor.model.*;
 import br.checker.monitor.repository.DeviceRepository;
 import br.checker.monitor.repository.RoleRepository;
 import org.springframework.stereotype.Service;
@@ -43,13 +38,15 @@ public class DeviceService {
     private final DeviceRepository deviceRepository;
     private final CatalogService catalogService;
     private final RoleRepository roleRepository;
+    private final PlaceService placeService;
 
     public DeviceService(DeviceRepository deviceRepository,
                          CatalogService catalogService,
-                         RoleRepository roleRepository) {
+                         RoleRepository roleRepository, PlaceService placeService) {
         this.deviceRepository = deviceRepository;
         this.catalogService = catalogService;
         this.roleRepository = roleRepository;
+        this.placeService = placeService;
     }
 
     /**
@@ -76,6 +73,11 @@ public class DeviceService {
             throw new BusinessRuleException("Pelo menos uma role deve ser atribuida ao dispositivo.");
         }
 
+        Place place = null;
+        if (request.idPlace() != null) {
+            place = placeService.findById(request.idPlace());
+        }
+
         String normalizedMac = normalizeMacAddress(request.macAddress());
 
         Device device = new Device();
@@ -84,6 +86,7 @@ public class DeviceService {
         device.setModel(model);
         device.setIpAddress(request.ipAddress());
         device.setMacAddress(normalizedMac);
+        device.setPlace(place);
 
         Device savedDevice = deviceRepository.save(device);
 
@@ -147,17 +150,42 @@ public class DeviceService {
             throw new BusinessRuleException("Pelo menos uma role deve ser atribuida ao dispositivo.");
         }
 
+        Place place = null;
+        if (request.idPlace() != null) {
+            place = placeService.findById(request.idPlace());
+        }
+
         device.setName(request.name());
         device.setBrand(brand);
         device.setModel(model);
         device.setIpAddress(request.ipAddress());
         device.setMacAddress(normalizeMacAddress(request.macAddress()));
+        device.setPlace(place);
 
-        device.getDeviceRoles().clear();
-        Set<DeviceRole> newRoles = request.deviceRoles().stream()
-                .map(roleReq -> createDeviceRole(device, roleReq))
+        Set<Long> requestedIds = request.deviceRoles().stream()
+                .map(DeviceRoleRequest::idRole)
                 .collect(Collectors.toSet());
-        device.setDeviceRoles(newRoles);
+
+        if (requestedIds.size() != request.deviceRoles().size()) {
+            throw new BusinessRuleException("A mesma role foi informada mais de uma vez.");
+        }
+
+        device.getDeviceRoles().removeIf(dr -> !requestedIds.contains(dr.getRole().getId()));
+
+        for (DeviceRoleRequest roleReq : request.deviceRoles()) {
+            DeviceRole existing = device.getDeviceRoles().stream()
+                    .filter(dr -> dr.getRole().getId().equals(roleReq.idRole()))
+                    .findFirst()
+                    .orElse(null);
+
+            if (existing != null) {
+                existing.setTimeStart(roleReq.timeStart());
+                existing.setTimeEnd(roleReq.timeEnd());
+                existing.setActive(roleReq.active() != null ? roleReq.active() : true);
+            } else {
+                device.getDeviceRoles().add(createDeviceRole(device, roleReq));
+            }
+        }
 
         Device updatedDevice = deviceRepository.save(device);
         return toDetailResponse(updatedDevice);
