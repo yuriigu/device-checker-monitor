@@ -1,8 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
-import { FormGroup } from '@angular/forms';
-import { ReactiveFormsModule } from '@angular/forms';
-import { Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgClass } from '@angular/common';
 import { DeviceService } from '../../services/device.service';
 
@@ -17,36 +14,68 @@ export class DeviceForm {
 
   constructor(
     private fb: FormBuilder,
-    private deviceService: DeviceService
+    private deviceService: DeviceService,
   ) {
     this.deviceForm = this.fb.group({
       name: ['', Validators.required],
-      brand: ['', Validators.required],
-      model: [''],
+      idBrand: ['', Validators.required],
+      idModel: [''],
       ipAddress: ['', Validators.required],
       macAddress: [''],
-      permissions: ['', Validators.required],
-      location: [''],
-    });
+      idRole: ['', Validators.required],
+      idPlace: ['', Validators.required],
+    })
   }
 
   onSubmit() {
     if (this.deviceForm.valid) {
-      this.deviceService.createDevice(this.deviceForm.value).subscribe({
+      const formValues = this.deviceForm.value;
+
+      const payload: any = {
+        name: formValues.name,
+        idBrand: Number(formValues.idBrand),
+        ipAddress: formValues.ipAddress,
+        idPlace: Number(formValues.idPlace),
+        deviceRoles: [
+          {
+            idRole: Number(formValues.idRole),
+            timeStart: '08:00:00',
+            timeEnd: '18:00:00',
+            active: true,
+          },
+        ],
+      };
+
+      if (formValues.idModel !== null && formValues.idModel !== '' && !isNaN(formValues.idModel)) {
+        payload.idModel = Number(formValues.idModel);
+      }
+
+      if (formValues.macAddress && formValues.macAddress.trim() !== '') {
+        payload.macAddress = formValues.macAddress.trim();
+      } else {
+        payload.macAddress = null;
+      }
+
+      console.log('Payload final enviado para o backend:', payload);
+
+      this.deviceService.createDevice(payload).subscribe({
         next: (response) => {
           console.log('Dispositivo cadastrado com sucesso!', response);
           alert('Dispositivo cadastrado com sucesso!');
           this.deviceForm.reset();
         },
-        error: (err) =>{
-          console. error('Erro ao cadastrar dispositivo:', err)
-          alert('Erro ao conectar com o servidor.');
-        }
+        error: (err) => {
+          console.error('Erro detalhado retornado pelo backend:', err);
+          const errorMsg = err.error?.details
+            ? err.error.details.join(', ')
+            : err.error?.message || 'Erro desconhecido';
+          alert('Erro ao cadastrar: ' + errorMsg);
+        },
       });
-      } else{
-        console.log('Formulário inválido.');
-        alert('Por favor, preencha todos os campos obrigatórios (*).');
-        this.deviceForm.markAllAsTouched();
+    } else {
+      console.log('Formulário inválido.');
+      alert('Por favor, preencha todos os campos obrigatórios (*).');
+      this.deviceForm.markAllAsTouched();
     }
   }
 

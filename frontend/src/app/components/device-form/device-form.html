@@ -18,28 +18,28 @@
   </label>
 
   <label>
-    <span class="text-gray-700 font-medium">Marca *</span>
-    <input formControlName="brand"
-           type="text"
-           placeholder="Ex: Cisco"
+    <span class="text-gray-700 font-medium">ID da Marca (idBrand) *</span>
+    <input formControlName="idBrand"
+           type="number"
+           placeholder="Ex: 1"
            [ngClass]="{
-             'border-red-500 bg-red-50': isFieldInvalid('brand'),
-             'border-gray-300': !isFieldInvalid('brand')
+             'border-red-500 bg-red-50': isFieldInvalid('idBrand'),
+             'border-gray-300': !isFieldInvalid('idBrand')
            }"
            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border">
 
-    @if (isFieldInvalid('brand')){
+    @if (isFieldInvalid('idBrand')){
       <span class="text-xs text-red-600 mt-1 block">
-        O campo Marca é obrigatório.
+        O campo ID da Marca é obrigatório.
       </span>
     }
   </label>
 
   <label>
-    <span class="text-gray-700 font-medium">Modelo </span>
-    <input formControlName="model"
-           type="text"
-           placeholder="Ex: RB750R2"
+    <span class="text-gray-700 font-medium">ID do Modelo (idModel)</span>
+    <input formControlName="idModel"
+           type="number"
+           placeholder="Ex: 1"
            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border">
   </label>
 
@@ -70,29 +70,40 @@
   </label>
 
   <label>
-    <span class="text-gray-700 font-medium">Permissões *</span>
-    <input formControlName="permissions"
-           type="text"
-           placeholder="Ex: Root"
+    <span class="text-gray-700 font-medium">ID da Permissão (idRole) *</span>
+    <input formControlName="idRole"
+           type="number"
+           placeholder="Ex: 1"
            [ngClass]="{
-             'border-red-500 bg-red-50': isFieldInvalid('permissions'),
-             'border-gray-300': !isFieldInvalid('permissions')
+             'border-red-500 bg-red-50': isFieldInvalid('idRole'),
+             'border-gray-300': !isFieldInvalid('idRole')
            }"
            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border">
 
-    @if (isFieldInvalid('permissions')){
+    @if (isFieldInvalid('idRole')){
       <span class="text-xs text-red-600 mt-1 block">
-        O campo Permissões é obrigatório.
+        O campo Permissão é obrigatório.
       </span>
+
     }
   </label>
 
   <label>
-    <span class="text-gray-700 font-medium">Localização </span>
-    <input formControlName="location"
-           type="text"
-           placeholder="Ex: Andar 2"
+    <span class="text-gray-700 font-medium">ID do Local (idPlace) *</span>
+    <input formControlName="idPlace"
+           type="number"
+           placeholder="Ex: 1"
+           [ngClass]="{
+             'border-red-500 bg-red-50': isFieldInvalid('idPlace'),
+             'border-gray-300': !isFieldInvalid('idPlace')
+           }"
            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border">
+
+    @if (isFieldInvalid('idPlace')){
+      <span class="text-xs text-red-600 mt-1 block">
+        O campo ID do Local é obrigatório.
+      </span>
+    }
   </label>
 
   <button type="submit"
