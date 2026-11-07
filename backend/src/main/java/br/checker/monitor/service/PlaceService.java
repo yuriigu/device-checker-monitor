@@ -56,16 +56,28 @@ public class PlaceService {
     }
 
     /**
+     * Verifica se o nome do local já está cadastrado no sistema.
+     */
+    private void validateNameAvailable(String name, Long currentId) {
+        String trimmed = name.trim();
+        boolean taken = currentId == null
+                ? placeRepository.existsByNameIgnoreCase(trimmed)
+                : placeRepository.existsByNameIgnoreCaseAndIdNot(trimmed, currentId);
+        if (taken) {
+            throw new BusinessRuleException("Ja existe um local com o nome: " + trimmed);
+        }
+    }
+
+    /**
      * Cadastra um novo lugar.
      */
     public Place create(PlaceRequest request) {
-        Place place = new Place();
-        place.setName(request.name());
+        validateNameAvailable(request.name(), null);
 
-        if (request.parentId() != null) {
-            Place parent = findById(request.parentId());
-            place.setParent(parent);
-        }
+        Place place = new Place();
+
+        place.setName(request.name().trim());
+        place.setCidr(request.cidr());
 
         return placeRepository.save(place);
     }
@@ -75,14 +87,10 @@ public class PlaceService {
      */
     public Place update(Long id, PlaceRequest request) {
         Place place = findById(id);
-        place.setName(request.name());
 
-        if (request.parentId() != null) {
-            Place parent = findById(request.parentId());
-            place.setParent(parent);
-        } else {
-            place.setParent(null);
-        }
+        validateNameAvailable(request.name(), id);
+        place.setName(request.name().trim());
+        place.setCidr(request.cidr());
 
         return placeRepository.save(place);
     }

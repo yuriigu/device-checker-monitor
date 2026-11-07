@@ -8,6 +8,7 @@ public record PlaceResponse(
     Long id,
     String name,
     Long parentId,
+    String cidr,
     PlaceAddressResponse address
 ) {
 }
