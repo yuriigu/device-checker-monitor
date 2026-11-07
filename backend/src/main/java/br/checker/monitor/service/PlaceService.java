@@ -1,9 +1,11 @@
 package br.checker.monitor.service;
 
+import br.checker.monitor.dto.PlaceAddressRequest;
 import br.checker.monitor.exception.BusinessRuleException;
 import br.checker.monitor.exception.ResourceNotFoundException;
 import br.checker.monitor.dto.PlaceRequest;
 import br.checker.monitor.model.Place;
+import br.checker.monitor.model.PlaceAddress;
 import br.checker.monitor.repository.PlaceRepository;
 
 import java.util.List;
@@ -69,6 +71,38 @@ public class PlaceService {
     }
 
     /**
+     * Aplica e valida o pai e o endereço do local.
+     */
+    private void applyParentAndAddress(Place place, PlaceRequest request) {
+        PlaceAddressRequest a = request.address();
+        if (request.parentId() != null) {
+            if (a != null) {
+                throw new BusinessRuleException("Somente lugares raiz (sem lugar pai) podem ter endereco fisico.");
+            }
+            Place parent = findById(request.parentId());
+
+            place.setParent(parent);
+            place.setAddress(null);
+        } else {
+            if (a == null) {
+                throw new BusinessRuleException("Lugares raiz precisam de endereco.");
+            }
+            place.setParent(null);
+            PlaceAddress address = place.getAddress();
+            if (address == null) {
+                address = new PlaceAddress();
+                address.setPlace(place);
+                place.setAddress(address);
+            }
+            address.setStreet(a.street());
+            address.setNumber(a.number());
+            address.setCity(a.city());
+            address.setState(a.state());
+            address.setZipCode(a.zipCode());
+        }
+    }
+
+    /**
      * Cadastra um novo lugar.
      */
     public Place create(PlaceRequest request) {
@@ -78,6 +112,8 @@ public class PlaceService {
 
         place.setName(request.name().trim());
         place.setCidr(request.cidr());
+
+        applyParentAndAddress(place, request);
 
         return placeRepository.save(place);
     }
@@ -91,6 +127,8 @@ public class PlaceService {
         validateNameAvailable(request.name(), id);
         place.setName(request.name().trim());
         place.setCidr(request.cidr());
+
+        applyParentAndAddress(place, request);
 
         return placeRepository.save(place);
     }
