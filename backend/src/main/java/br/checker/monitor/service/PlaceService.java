@@ -71,6 +71,20 @@ public class PlaceService {
     }
 
     /**
+     * Valida se há referência circular na hierarquia.
+     */
+    private void validateNoCycle(Place place, Place newParent) {
+        Place current = newParent;
+        while (current != null) {
+            if (current.getId().equals(place.getId())) {
+                throw new BusinessRuleException(
+                        "Referencia circular: o local nao pode ser pai de si mesmo ou de um descendente.");
+            }
+            current = current.getParent();
+        }
+    }
+
+    /**
      * Aplica e valida o pai e o endereço do local.
      */
     private void applyParentAndAddress(Place place, PlaceRequest request) {
@@ -80,7 +94,7 @@ public class PlaceService {
                 throw new BusinessRuleException("Somente lugares raiz (sem lugar pai) podem ter endereco fisico.");
             }
             Place parent = findById(request.parentId());
-
+            validateNoCycle(place, parent);
             place.setParent(parent);
             place.setAddress(null);
         } else {
