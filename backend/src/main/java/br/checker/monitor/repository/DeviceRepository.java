@@ -4,11 +4,13 @@ import br.checker.monitor.model.Device;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * Repositório de dados para a entidade {@link Device} (tabela devices).
  *
  * <p>A classe esquelética existente foi convertida em uma {@code interface} estendendo
- * {@link JpaRepository<Device, Long>}, assim o Spring Data JPA fornece automaticamente
+ * {@link JpaRepository}, assim o Spring Data JPA fornece automaticamente
  * todos os métodos CRUD padrão.
  *
  * <p>Adicionamos um método de consulta derivado (query method):
@@ -37,4 +39,12 @@ public interface DeviceRepository extends JpaRepository<Device, Long> {
      * @return o dispositivo com esse IP, ou null se não existir
      */
     Device findByIpAddress(String ipAddress);
+
+    /**
+     * Lista todos os dispositivos associados a um determinado local.
+     *
+     * @param placeId ID do local
+     * @return lista de dispositivos pertencentes ao local
+     */
+    List<Device> findByPlaceId(Long placeId);
 }
