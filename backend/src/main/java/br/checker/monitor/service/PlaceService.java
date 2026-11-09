@@ -6,6 +6,7 @@ import br.checker.monitor.exception.ResourceNotFoundException;
 import br.checker.monitor.dto.PlaceRequest;
 import br.checker.monitor.model.Place;
 import br.checker.monitor.model.PlaceAddress;
+import br.checker.monitor.repository.DeviceRepository;
 import br.checker.monitor.repository.PlaceRepository;
 
 import java.util.List;
@@ -29,9 +30,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class PlaceService {
 
     private final PlaceRepository placeRepository;
+    private final DeviceRepository deviceRepository;
 
-    public PlaceService(PlaceRepository placeRepository) {
+    public PlaceService(PlaceRepository placeRepository, DeviceRepository deviceRepository) {
         this.placeRepository = placeRepository;
+        this.deviceRepository = deviceRepository;
     }
 
     /**
@@ -161,6 +164,12 @@ public class PlaceService {
     public void delete(Long id) {
         if (!placeRepository.existsById(id)) {
             throw new ResourceNotFoundException("Lugar nao encontrado com id: " + id);
+        }
+        if (placeRepository.existsByParentId(id)) {
+            throw new BusinessRuleException("Nao e possivel remover um local que possui locais filhos.");
+        }
+        if (deviceRepository.existsByPlaceId(id)) {
+            throw new BusinessRuleException("Nao e possivel remover um local que possui dispositivos vinculados.");
         }
         placeRepository.deleteById(id);
     }

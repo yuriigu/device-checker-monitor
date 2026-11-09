@@ -47,4 +47,6 @@ public interface DeviceRepository extends JpaRepository<Device, Long> {
      * @return lista de dispositivos pertencentes ao local
      */
     List<Device> findByPlaceId(Long placeId);
+
+    boolean existsByPlaceId(Long placeId);
 }

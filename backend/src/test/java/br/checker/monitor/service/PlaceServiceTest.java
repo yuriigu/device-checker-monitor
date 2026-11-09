@@ -4,6 +4,7 @@ import br.checker.monitor.dto.PlaceAddressRequest;
 import br.checker.monitor.dto.PlaceRequest;
 import br.checker.monitor.exception.BusinessRuleException;
 import br.checker.monitor.model.Place;
+import br.checker.monitor.repository.DeviceRepository;
 import br.checker.monitor.repository.PlaceRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,6 +24,9 @@ class PlaceServiceTest {
 
     @Mock
     private PlaceRepository placeRepository;
+
+    @Mock
+    private DeviceRepository deviceRepository;
 
     @InjectMocks
     private PlaceService placeService;
@@ -106,5 +110,25 @@ class PlaceServiceTest {
         assertNotNull(saved.getAddress());
         assertEquals("Curitiba", saved.getAddress().getCity());
         assertSame(saved, saved.getAddress().getPlace());
+    }
+
+    @Test
+    void delete_comFilhos_lancaBusinessRuleException() {
+        when(placeRepository.existsById(1L)).thenReturn(true);
+        when(placeRepository.existsByParentId(1L)).thenReturn(true);
+
+        assertThrows(BusinessRuleException.class, () -> placeService.delete(1L));
+
+        verify(placeRepository, never()).deleteById(any());
+    }
+
+    @Test
+    void delete_comDispositivos_lancaBusinessRuleException() {
+        when(placeRepository.existsById(1L)).thenReturn(true);
+        when(deviceRepository.existsByPlaceId(1L)).thenReturn(true);
+
+        assertThrows(BusinessRuleException.class, () -> placeService.delete(1L));
+
+        verify(placeRepository, never()).deleteById(any());
     }
 }
