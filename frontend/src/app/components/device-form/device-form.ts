@@ -7,6 +7,7 @@ const MAC_PATTERN = /^([0-9A-Fa-f]{2}[:-]?){5}[0-9A-Fa-f]{2}$/;
 
 @Component({
   imports: [ReactiveFormsModule],
+  standalone: true,
   selector: 'app-device-form',
   styleUrl: './device-form.css',
   templateUrl: './device-form.html',
