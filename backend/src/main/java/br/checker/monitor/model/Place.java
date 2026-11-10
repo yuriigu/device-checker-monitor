@@ -35,15 +35,23 @@ public class Place {
     @JoinColumn(name = "parent_id")
     private Place parent;
 
-    @OneToOne(mappedBy = "place", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = true)
+    @OneToOne(mappedBy = "place", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = true, orphanRemoval = true)
     private PlaceAddress address;
 
-    public Place() {
+    @Column(name = "cidr", nullable = false, length = 18)
+    private String cidr;
+
+    public Place(String cidr) {
+        this.cidr = cidr;
     }
 
-    public Place(String name, Place parent) {
+    public Place(String name, Place parent, String cidr) {
         this.name = name;
         this.parent = parent;
+        this.cidr = cidr;
+    }
+
+    public Place() {
     }
 
     public Long getId() {
@@ -76,6 +84,14 @@ public class Place {
 
     public void setAddress(PlaceAddress address) {
         this.address = address;
+    }
+
+    public String getCidr() {
+        return cidr;
+    }
+
+    public void setCidr(String cidr) {
+        this.cidr = cidr;
     }
 
     /**

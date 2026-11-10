@@ -242,6 +242,14 @@ class DeviceControllerTest {
         verify(deviceService, times(1)).findAll();
     }
 
+    @Test
+    void testCreateDevice_MalformedJson() throws Exception {
+        mockMvc.perform(post("/api/devices")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{ invalido"))
+                .andExpect(status().isBadRequest());
+    }
+
     // =========================================================================
     // Metodos privados auxiliares
     // =========================================================================
