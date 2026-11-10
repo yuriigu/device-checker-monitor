@@ -1,8 +1,7 @@
 package br.checker.monitor.enums;
 
 public enum RuleSeverity {
-    GRAVISSIMA,
-    GRAVE,
-    MEDIA,
-    BAIXA
+    INFORMATIVO,
+    AVISO,
+    CRITICO
 }
