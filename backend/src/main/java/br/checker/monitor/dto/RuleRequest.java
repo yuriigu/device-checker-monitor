@@ -3,7 +3,7 @@ package br.checker.monitor.dto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-//DTO para cadastro de usuario(User)
+//DTO para resposta de cadastro de regra (Rule)
 
 public record RuleRequest(
 
@@ -18,6 +18,6 @@ public record RuleRequest(
 
         boolean applyToAll,
         Long deviceId,
-        Long placeId,
+        Long placeId
 ) {
 }

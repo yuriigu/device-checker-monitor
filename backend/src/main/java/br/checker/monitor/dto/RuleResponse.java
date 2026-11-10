@@ -1,8 +1,8 @@
 package br.checker.monitor.dto;
 
-//DTO para cadastro de usuario(User)
+//DTO para responsta do cadastro de Regra (Rule)
 
-public record RuleRequest(
+public record RuleResponse(
 
         Long id,
         string Name,
@@ -10,7 +10,6 @@ public record RuleRequest(
         RuleSeverity severity
         boolean applyToAll,
         Long deviceId,
-        Long placeId,
-        List<Long> notifiedUserIds //lista de ids de quem será notificado
+        Long placeId
 ) {
 }
