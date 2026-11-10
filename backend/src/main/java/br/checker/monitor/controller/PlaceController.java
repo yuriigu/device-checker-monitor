@@ -3,10 +3,10 @@ package br.checker.monitor.controller;
 import br.checker.monitor.dto.PlaceAddressResponse;
 import br.checker.monitor.dto.PlaceRequest;
 import br.checker.monitor.dto.PlaceResponse;
-import br.checker.monitor.exception.BusinessRuleException;
 import br.checker.monitor.model.Place;
 import br.checker.monitor.service.PlaceService;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,18 +44,7 @@ public class PlaceController {
     public ResponseEntity<List<PlaceResponse>> listPlaces() {
         List<Place> places = placeService.findAll();
         List<PlaceResponse> responses = places.stream()
-                .map(p -> new PlaceResponse(
-                        p.getId(),
-                        p.getName(),
-                        p.getParent() != null ? p.getParent().getId() : null,
-                        p.getAddress() != null ?
-                                new PlaceAddressResponse(
-                                        p.getAddress().getStreet(),
-                                        p.getAddress().getNumber(),
-                                        p.getAddress().getCity(),
-                                        p.getAddress().getState(),
-                                        p.getAddress().getZipCode())
-                                : null))
+                .map(this::toResponse)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(responses);
     }
@@ -66,19 +55,7 @@ public class PlaceController {
     @GetMapping("/{id}")
     public ResponseEntity<PlaceResponse> getPlace(@PathVariable Long id) {
         Place place = placeService.findById(id);
-        PlaceResponse response = new PlaceResponse(
-                place.getId(),
-                place.getName(),
-                place.getParent() != null ? place.getParent().getId() : null,
-                place.getAddress() != null ?
-                        new PlaceAddressResponse(
-                                place.getAddress().getStreet(),
-                                place.getAddress().getNumber(),
-                                place.getAddress().getCity(),
-                                place.getAddress().getState(),
-                                place.getAddress().getZipCode())
-                        : null);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(toResponse(place));
     }
 
     /**
@@ -87,12 +64,7 @@ public class PlaceController {
     @PostMapping
     public ResponseEntity<PlaceResponse> createPlace(@Valid @RequestBody PlaceRequest request) {
         Place place = placeService.create(request);
-        PlaceResponse response = new PlaceResponse(
-                place.getId(),
-                place.getName(),
-                place.getParent() != null ? place.getParent().getId() : null,
-                null);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.status(HttpStatus.CREATED).body(toResponse(place));
     }
 
     /**
@@ -100,14 +72,9 @@ public class PlaceController {
      */
     @PutMapping("/{id}")
     public ResponseEntity<PlaceResponse> updatePlace(@PathVariable Long id,
-                                                      @Valid @RequestBody PlaceRequest request) {
+                                                     @Valid @RequestBody PlaceRequest request) {
         Place place = placeService.update(id, request);
-        PlaceResponse response = new PlaceResponse(
-                place.getId(),
-                place.getName(),
-                place.getParent() != null ? place.getParent().getId() : null,
-                null);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(toResponse(place));
     }
 
     /**
@@ -127,5 +94,27 @@ public class PlaceController {
     public ResponseEntity<Void> validateAddress(@PathVariable Long id) {
         placeService.validateAddressRule(id);
         return ResponseEntity.ok().build();
+    }
+
+    /**
+     * Converte a entidade Place para o DTO PlaceResponse.
+     */
+    private PlaceResponse toResponse(Place p) {
+        PlaceAddressResponse addressResponse = p.getAddress() != null
+                ? new PlaceAddressResponse(
+                p.getAddress().getStreet(),
+                p.getAddress().getNumber(),
+                p.getAddress().getCity(),
+                p.getAddress().getState(),
+                p.getAddress().getZipCode())
+                : null;
+
+        return new PlaceResponse(
+                p.getId(),
+                p.getName(),
+                p.getParent() != null ? p.getParent().getId() : null,
+                p.getCidr(),
+                addressResponse
+        );
     }
 }

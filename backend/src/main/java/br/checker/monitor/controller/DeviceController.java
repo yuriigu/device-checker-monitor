@@ -72,8 +72,10 @@ public class DeviceController {
      * Lista todos os dispositivos (versao resumida para tabela/grid).
      */
     @GetMapping
-    public ResponseEntity<List<DeviceSummaryResponse>> listDevices() {
-        List<DeviceSummaryResponse> devices = deviceService.findAll();
+    public ResponseEntity<List<DeviceSummaryResponse>> listDevices(@RequestParam(required = false) Long placeId) {
+        List<DeviceSummaryResponse> devices = placeId != null
+                ? deviceService.findByPlace(placeId)
+                : deviceService.findAll();
         return ResponseEntity.ok(devices);
     }
 

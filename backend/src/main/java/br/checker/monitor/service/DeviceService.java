@@ -121,6 +121,17 @@ public class DeviceService {
     }
 
     /**
+     * Lista todos os dispositivos resumidos de um local específico.
+     */
+    @Transactional(readOnly = true)
+    public List<DeviceSummaryResponse> findByPlace(Long placeId) {
+        placeService.findById(placeId);
+        return deviceRepository.findByPlaceId(placeId).stream()
+                .map(this::toSummaryResponse)
+                .collect(Collectors.toList());
+    }
+
+    /**
      * Atualiza um dispositivo existente aplicando as mesmas regras de negocio do cadastro.
      */
     public DeviceDetailResponse update(Long id, DeviceRequest request) {
