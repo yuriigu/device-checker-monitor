@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-alerts',
@@ -8,4 +9,10 @@ import { CommonModule } from '@angular/common';
   templateUrl: './alerts.html',
   styleUrl: './alerts.css',
 })
-export class AlertsComponent {}
+
+export class AlertsComponent {
+  constructor(){
+    name: ['', Validators.required],
+    description: ['', Validators.required],
+    }
+  }

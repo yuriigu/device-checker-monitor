@@ -1,4 +1,97 @@
-<div class="p-6">
-  <h1 class="text-2xl font-bold text-gray-800">Alerts</h1>
-  <p class="text-gray-600 mt-2">Alertas.</p>
+<div class="min-h-full bg-slate-950 p-6 md:p-10 text-slate-100">
+  <!-- Cabeçalho interno da página -->
+  <header class="mb-8 max-w-7xl mx-auto">
+    <p class="text-xs font-medium uppercase tracking-wider text-slate-500">
+      Alertas
+    </p>
+    <h1 class="mt-1 text-3xl font-semibold">Cadastrar alerta ou ticket</h1>
+    <p class="mt-1 text-sm text-slate-400">
+      Registre um incidente, vincule o ativo e direcione o atendimento.
+    </p>
+  </header>
+
+  <form [formGroup]="UsersComponent" (ngSubmit)="onSubmit()" novalidate class="max-w-7xl mx-auto w-full">
+    <!-- Grelha principal de 3 colunas -->
+    <div class="grid w-full grid-cols-1 gap-6 lg:grid-cols-3">
+
+      <!-- Coluna Esquerda (Ocupa 3 colunas) -->
+      <div class="space-y-6 lg:col-span-3">
+
+        <!-- Detalhes do Chamado -->
+        <section class="rounded-xl border border-slate-700/60 bg-slate-900 p-6 shadow-xl">
+          <h2 class="text-base font-semibold">Detalhes do Chamado</h2>
+          <p class="mt-1 text-xs text-slate-400">
+            Descreva o que aconteceu e inclua evidências para agilizar a análise.
+          </p>
+
+          <div class="mt-5 grid gap-4 sm:grid-cols-2">
+            <label class="sm:col-span-2">
+              <span class="text-xs font-medium text-slate-300">Título *</span>
+              <input
+                formControlName="name"
+                type="text"
+                placeholder=" "
+                [class]="fieldClass('name')"
+              />
+              @if (isFieldInvalid('name')) {
+              <span class="mt-1 block text-xs text-red-400">O campo Título é obrigatório.</span>
+              }
+            </label>
+
+
+            <label>
+              <span class="text-xs font-medium text-slate-300">Descrição </span>
+              <input
+                formControlName="description"
+                type="text"
+                placeholder=" "
+                [class]="fieldClass('description')"
+              />
+            </label>
+          </div>
+        </section>
+
+        <!-- Participantes e atribuição -->
+        <section class="rounded-xl border border-slate-700/60 bg-slate-900 p-6 shadow-xl">
+          <h2 class="text-base font-semibold">Participantes e atribuição</h2>
+
+          <div class="mt-5 grid gap-4 sm:grid-cols-2">
+            <label>
+              <span class="text-xs font-medium text-slate-300">Requerente *</span>
+              <input
+                formControlName="user"
+                type="text"
+                placeholder=" "
+                [class]="fieldClass('user')"
+              />
+            </label>
+
+          </div>
+        </section>
+
+      </div>
+
+      <!-- Rodapé de Ações -->
+      <div class="mt-8 mb-12 flex items-center justify-between border-t border-slate-800 pt-6">
+        <p class="text-xs text-slate-500">Os campos marcados com * são obrigatórios.</p>
+
+        <div class="flex gap-3">
+          <button
+            type="button"
+            (click)="onCancel()"
+            class="rounded-md border border-slate-700 bg-slate-900 px-4 py-2 text-sm font-medium text-slate-200 hover:bg-slate-800"
+          >
+            Cancelar
+          </button>
+          <button
+            type="submit"
+            [disabled]="isSubmitting()"
+            class="rounded-md bg-amber-400 px-4 py-2 text-sm font-semibold text-slate-900 hover:bg-amber-300 disabled:opacity-50"
+          >
+            Criar Ticket
+          </button>
+        </div>
+      </div>
+  </form>
 </div>
+
