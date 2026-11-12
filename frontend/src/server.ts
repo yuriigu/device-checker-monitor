@@ -20,7 +20,7 @@ const angularApp = new AngularNodeAppEngine({
 
 /**
  * Middleware para interceptar todas as requisicoes /api/*
- * e fazer proxy manual para o backend via rede Docker.
+ * e fazer proxy manual para o backend.
  */
 app.use('/api', (req, res, next) => {
   if (req.method === 'OPTIONS') {
@@ -58,9 +58,10 @@ app.use('/api', (req, res) => {
     proxyRes.pipe(res, { end: true });
   });
 
-  proxyReq.on('error', (e) => {
-    console.error('Proxy error:', e.message);
-    res.status(502).json({ error: 'Proxy error', message: e.message });
+  proxyReq.on('error', (error) => {
+    const message = error.message || `Não foi possível conectar ao backend em ${targetUrl.host}`;
+    console.error(`Proxy error (${targetUrl.host}):`, message);
+    res.status(502).json({ error: 'Proxy error', message });
   });
 
   if (req.method === 'POST' || req.method === 'PUT' || req.method === 'PATCH') {
@@ -112,6 +113,6 @@ if (isMainModule(import.meta.url) || process.env['pm_id']) {
 export const reqHandler = createNodeRequestHandler(app);
 
 /**
- * URL alvo do backend (servico Docker).
+ * URL do backend; localmente usa localhost e o Docker Compose define o hostname do servico.
  */
-const API_TARGET = process.env['API_URL'] || 'http://api:8080';
+const API_TARGET = process.env['API_URL'] || 'http://localhost:8080';
