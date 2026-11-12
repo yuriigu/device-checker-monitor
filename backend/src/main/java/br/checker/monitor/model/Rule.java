@@ -25,20 +25,12 @@ public class Rule {
     @Column(name = "apply_to_all", nullable = false)
     private boolean applyToAll = false;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "device_id")
-    private Device device;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "place_id")
-    private Place place;
-
     @Column(name = "notification_channel", nullable = false)
     private String notificationChannel;
 
     public Rule() {}
 
-    // --- Getters e Setters ---
+    //getters e setters
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
@@ -51,12 +43,6 @@ public class Rule {
 
     public RuleSeverity getSeverity() { return severity; }
     public void setSeverity(RuleSeverity severity) { this.severity = severity; }
-
-    public Device getDevice() { return device; }
-    public void setDevice(Device device) { this.device = device; }
-
-    public Place getPlace() { return place; }
-    public void setPlace(Place place) { this.place = place; }
 
     public boolean isApplyToAll() { return applyToAll; }
     public void setApplyToAll(boolean applyToAll) { this.applyToAll = applyToAll; }

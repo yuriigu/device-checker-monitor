@@ -1,15 +1,14 @@
 package br.checker.monitor.dto;
 
 //DTO para responsta do cadastro de Regra (Rule)
+import br.checker.monitor.enums.RuleSeverity;
 
 public record RuleResponse(
 
         Long id,
-        string Name,
+        String Name,
         String occurence,
-        RuleSeverity severity
-        boolean applyToAll,
-        Long deviceId,
-        Long placeId
+        RuleSeverity severity,
+        boolean applyToAll
 ) {
 }

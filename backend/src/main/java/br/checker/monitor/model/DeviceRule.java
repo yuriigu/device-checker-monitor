@@ -1,5 +1,7 @@
 package br.checker.monitor.model;
 
+import jakarta.persistence.*;
+
 @Entity
 @Table(name = "device_rules")
 public class DeviceRule {
@@ -21,10 +23,11 @@ public class DeviceRule {
 
     DeviceRule() {}
 
+    //getters e setters
+
     public Long getId() {
         return id;
     }
-
     public void setId(Long id) {
         this.id = id;
     }
@@ -32,7 +35,6 @@ public class DeviceRule {
     public Device getDevice() {
         return device;
     }
-
     public void setDevice(Device device) {
         this.device = device;
     }
@@ -40,7 +42,6 @@ public class DeviceRule {
     public Boolean getEnabled() {
         return enabled;
     }
-
     public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
     }
@@ -48,7 +49,6 @@ public class DeviceRule {
     public Rule getRule() {
         return rule;
     }
-
     public void setRule(Rule rule) {
         this.rule = rule;
     }
