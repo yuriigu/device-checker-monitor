@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Validators, FormGroups, FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-users',
@@ -8,4 +9,10 @@ import { CommonModule } from '@angular/common';
   templateUrl: './users.html',
   styleUrl: './users.css',
 })
-export class UsersComponent {}
+export class UsersComponent {
+  UsersComponent: FormGroups;
+  constructor(){
+    name: ['', Validators.required],
+    email: ['', Validators.required],
+    password: ['', Validators.required],
+  }
