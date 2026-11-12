@@ -21,7 +21,7 @@ public class DeviceRule {
     @Column(name = "enabled", nullable = false)
     private Boolean enabled = true;
 
-    DeviceRule() {}
+    public DeviceRule() {}
 
     //getters e setters
 

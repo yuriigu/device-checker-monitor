@@ -21,7 +21,7 @@ public class PlaceRule {
     @Column(name = "enabled", nullable = false)
     private Boolean enabled = true;
 
-    PlaceRule() {}
+    public PlaceRule() {}
 
     public Long getId() {
         return id;

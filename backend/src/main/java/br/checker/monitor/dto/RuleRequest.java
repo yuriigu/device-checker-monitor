@@ -12,7 +12,7 @@ public record RuleRequest(
         String name,
 
         @NotBlank(message = "A ocorrencia da regra é obrigatória") //ocorrencia nao pode ser nula
-        String occurence,
+        String occurrence,
 
         @NotNull(message = "A severidade da regra é obrigatória") //severidade nao pode ser nula
         RuleSeverity severity,
