@@ -50,7 +50,6 @@ public class UserService {
         User user = new User();                      //instanciando o novo user e atribuindo dados de entrada para seus atributos
         user.setName(request.name());
         user.setEmail(request.email());
-        user.setPhone(request.phone());
         user.setPassword(passwordHash);
         user.setRole(role);
 

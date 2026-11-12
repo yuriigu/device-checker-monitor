@@ -18,9 +18,6 @@ public class User {
     @Column(name = "email", length = 255, unique = true)
     private String email;
 
-    @Column(name = "phone", length = 30, unique = true)
-    private String phone;
-
     @Column(name = "password", length = 255)
     private String password;
 
@@ -56,14 +53,6 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
     }
 
     public String getPassword() { return password; }

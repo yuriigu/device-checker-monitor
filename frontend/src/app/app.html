@@ -1,16 +1,13 @@
-<div class="flex h-screen bg-gray-100 overflow-hidden">
+<div [class]="showSidebar() ? 'flex h-screen bg-gray-100 overflow-hidden' : 'min-h-screen bg-slate-950'">
 
-  <!-- Coluna da Esquerda: A Sidebar fixa -->
-  <app-sidebar class="w-84 h-full flex flex-col shrink-0"></app-sidebar>
+  @if (showSidebar()) {
+    <app-sidebar class="w-84 h-full flex flex-col shrink-0"></app-sidebar>
+  }
 
-  <!-- Coluna da Direita: Conteúdo Principal que se expande e faz scroll se necessário -->
-  <main class="flex-1 flex flex-col overflow-y-auto">
-
-    <!-- Área onde o formulário ou as secções futuras vão aparecer -->
-    <div class="p-8 flex-1">
+  <main [class]="showSidebar() ? 'flex-1 flex flex-col overflow-y-auto' : 'min-h-screen w-full'">
+    <div [class]="showSidebar() ? 'p-8 flex-1' : 'min-h-screen'">
       <router-outlet></router-outlet>
     </div>
-
   </main>
 
 </div>
