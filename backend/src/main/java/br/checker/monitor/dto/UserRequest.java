@@ -17,6 +17,8 @@ public record UserRequest(
         @Email(message = "Formato de e-mail inválido")
         String email,
 
+        String phone,
+
         @NotBlank(message = "A senha é obrigatória") //senha nao pode ser nula
         @Pattern(regexp = "^.*(?=.{8,})(?=..*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).*$") //minimo 8 digitos, pelomenos 1 caracter minusculo e maiusculo, 1 numero e 1 simbolo especial
         @Size(min = 8, max = 20) //minimo 8 maximo 20
