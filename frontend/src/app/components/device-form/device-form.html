@@ -1,102 +1,176 @@
-<form [formGroup]="deviceForm" (ngSubmit)="onSubmit()">
-  <label>
-    <span class="text-gray-700 font-medium">Nome do Dispositivo *</span>
-    <input formControlName="name"
-           type="text"
-           placeholder="Ex: Roteador-Core-01"
-           [ngClass]="{
-             'border-red-500 bg-red-50': isFieldInvalid('name'),
-             'border-gray-300': !isFieldInvalid('name')
-           }"
-           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border">
+<div class="min-h-full bg-slate-950 p-6 md:p-10 text-slate-100">
+  <!-- Cabeçalho interno da página -->
+  <header class="mb-8 max-w-7xl mx-auto">
+    <p class="text-xs font-medium uppercase tracking-wider text-slate-500">
+      Dispositivos
+    </p>
+    <h1 class="mt-1 text-3xl font-semibold">Cadastrar dispositivo</h1>
+    <p class="mt-1 text-sm text-slate-400">
+      Centralize o inventário e configure o monitoramento do novo ativo.
+    </p>
+  </header>
 
-    @if (isFieldInvalid('name')){
-      <span class="text-xs text-red-600 mt-1 block">
-        O campo Nome é obrigatório.
-      </span>
-    }
-  </label>
+  <form [formGroup]="deviceForm" (ngSubmit)="onSubmit()" novalidate class="max-w-7xl mx-auto w-full">
+    <!-- Grelha principal de 3 colunas (2 para esquerda, 1 para direita) -->
+    <div class="grid w-full grid-cols-1 gap-6 lg:grid-cols-3">
 
-  <label>
-    <span class="text-gray-700 font-medium">Marca *</span>
-    <input formControlName="brand"
-           type="text"
-           placeholder="Ex: Cisco"
-           [ngClass]="{
-             'border-red-500 bg-red-50': isFieldInvalid('brand'),
-             'border-gray-300': !isFieldInvalid('brand')
-           }"
-           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border">
+      <!-- Coluna Esquerda (Ocupa 2 colunas) -->
+      <div class="space-y-6 lg:col-span-2">
 
-    @if (isFieldInvalid('brand')){
-      <span class="text-xs text-red-600 mt-1 block">
-        O campo Marca é obrigatório.
-      </span>
-    }
-  </label>
+        <!-- Identificação -->
+        <section class="rounded-xl border border-slate-700/60 bg-slate-900 p-6 shadow-xl">
+          <h2 class="text-base font-semibold">Identificação</h2>
+          <p class="mt-1 text-xs text-slate-400">
+            Informações principais para localizar o dispositivo no inventário.
+          </p>
 
-  <label>
-    <span class="text-gray-700 font-medium">Modelo </span>
-    <input formControlName="model"
-           type="text"
-           placeholder="Ex: RB750R2"
-           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border">
-  </label>
+          <div class="mt-5 grid gap-4 sm:grid-cols-2">
+            <label class="sm:col-span-2">
+              <span class="text-xs font-medium text-slate-300">Nome do dispositivo *</span>
+              <input
+                formControlName="name"
+                type="text"
+                placeholder="Ex: SW-CORE-SP-01"
+                [class]="fieldClass('name')"
+              />
+              @if (isFieldInvalid('name')) {
+                <span class="mt-1 block text-xs text-red-400">O campo Nome é obrigatório.</span>
+              }
+            </label>
 
-  <label>
-    <span class="text-gray-700 font-medium">IP *</span>
-    <input formControlName="ipAddress"
-           type="text"
-           placeholder="Ex: 192.168.0.1"
-           [ngClass]="{
-             'border-red-500 bg-red-50': isFieldInvalid('ipAddress'),
-             'border-gray-300': !isFieldInvalid('ipAddress')
-           }"
-           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border">
+            <label>
+              <span class="text-xs font-medium text-slate-300">Fabricante (ID) *</span>
+              <input
+                formControlName="idBrand"
+                type="number"
+                min="1"
+                placeholder="Ex: 1"
+                [class]="fieldClass('idBrand')"
+              />
+              @if (isFieldInvalid('idBrand')) {
+                <span class="mt-1 block text-xs text-red-400">O campo Fabricante é obrigatório.</span>
+              }
+            </label>
 
-    @if (isFieldInvalid('ipAddress')){
-      <span class="text-xs text-red-600 mt-1 block">
-        O campo IP é obrigatório.
-      </span>
-    }
-  </label>
+            <label>
+              <span class="text-xs font-medium text-slate-300">Modelo (ID)</span>
+              <input
+                formControlName="idModel"
+                type="number"
+                min="1"
+                placeholder="Ex: 1"
+                [class]="fieldClass('idModel')"
+              />
+            </label>
+          </div>
+        </section>
 
-  <label>
-    <span class="text-gray-700 font-medium">MAC </span>
-    <input formControlName="macAddress"
-           type="text"
-           placeholder="Ex: 00:1A:2B:3C:4D:5E"
-           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border">
-  </label>
+        <!-- Rede e conectividade -->
+        <section class="rounded-xl border border-slate-700/60 bg-slate-900 p-6 shadow-xl">
+          <h2 class="text-base font-semibold">Rede e conectividade</h2>
+          <p class="mt-1 text-xs text-slate-400">
+            Endereço principal usado nas verificações de disponibilidade.
+          </p>
 
-  <label>
-    <span class="text-gray-700 font-medium">Permissões *</span>
-    <input formControlName="permissions"
-           type="text"
-           placeholder="Ex: Root"
-           [ngClass]="{
-             'border-red-500 bg-red-50': isFieldInvalid('permissions'),
-             'border-gray-300': !isFieldInvalid('permissions')
-           }"
-           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border">
+          <div class="mt-5 grid gap-4 sm:grid-cols-2">
+            <label>
+              <span class="text-xs font-medium text-slate-300">Endereço IP *</span>
+              <input
+                formControlName="ipAddress"
+                type="text"
+                placeholder="Ex: 10.0.1.10"
+                [class]="fieldClass('ipAddress')"
+              />
+              @if (isFieldInvalid('ipAddress')) {
+                <span class="mt-1 block text-xs text-red-400">Informe um IP válido (ex: 10.0.1.10).</span>
+              }
+            </label>
 
-    @if (isFieldInvalid('permissions')){
-      <span class="text-xs text-red-600 mt-1 block">
-        O campo Permissões é obrigatório.
-      </span>
-    }
-  </label>
+            <label>
+              <span class="text-xs font-medium text-slate-300">Endereço MAC</span>
+              <input
+                formControlName="macAddress"
+                type="text"
+                placeholder="Ex: 00:1A:2B:3C:4D:5E"
+                [class]="fieldClass('macAddress')"
+              />
+              @if (isFieldInvalid('macAddress')) {
+                <span class="mt-1 block text-xs text-red-400">MAC inválido. Use o formato 00:1A:2B:3C:4D:5E.</span>
+              }
+            </label>
+          </div>
+        </section>
 
-  <label>
-    <span class="text-gray-700 font-medium">Localização </span>
-    <input formControlName="location"
-           type="text"
-           placeholder="Ex: Andar 2"
-           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border">
-  </label>
+        <!-- Localização -->
+        <section class="rounded-xl border border-slate-700/60 bg-slate-900 p-6 shadow-xl">
+          <h2 class="text-base font-semibold">Localização e responsabilidade</h2>
+          <p class="mt-1 text-xs text-slate-400">Local onde o dispositivo está instalado.</p>
 
-  <button type="submit"
-          class="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md shadow focus:outline-none focus:ring-2 focus:ring-blue-500">
-    Cadastrar Dispositivo
-  </button>
-</form>
+          <div class="mt-5">
+            <label>
+              <span class="text-xs font-medium text-slate-300">Unidade / Localização (ID) *</span>
+              <input
+                formControlName="idPlace"
+                type="number"
+                min="1"
+                placeholder="Ex: 1"
+                [class]="fieldClass('idPlace')"
+              />
+              @if (isFieldInvalid('idPlace')) {
+                <span class="mt-1 block text-xs text-red-400">O campo Localização é obrigatório.</span>
+              }
+            </label>
+          </div>
+        </section>
+      </div>
+
+      <!-- Coluna Direita (Ocupa 1 coluna) -->
+      <div class="space-y-6">
+        <section class="rounded-xl border border-slate-700/60 bg-slate-900 p-6 shadow-xl">
+          <h2 class="text-base font-semibold">Gestão do ativo</h2>
+          <p class="mt-1 text-xs text-slate-400">Permissão de gerenciamento do dispositivo.</p>
+
+          <div class="mt-5">
+            <label>
+              <span class="text-xs font-medium text-slate-300">Permissão (ID) *</span>
+              <input
+                formControlName="idRole"
+                type="number"
+                min="1"
+                placeholder="Ex: 1"
+                [class]="fieldClass('idRole')"
+              />
+              @if (isFieldInvalid('idRole')) {
+                <span class="mt-1 block text-xs text-red-400">O campo Permissão é obrigatório.</span>
+              }
+            </label>
+          </div>
+        </section>
+      </div>
+
+    </div>
+
+    <!-- Rodapé de Ações -->
+    <div class="mt-8 mb-12 flex items-center justify-between border-t border-slate-800 pt-6">
+      <p class="text-xs text-slate-500">Os campos marcados com * são obrigatórios.</p>
+
+      <div class="flex gap-3">
+        <button
+          type="button"
+          (click)="onCancel()"
+          class="rounded-md border border-slate-700 bg-slate-900 px-4 py-2 text-sm font-medium text-slate-200 hover:bg-slate-800"
+        >
+          Cancelar
+        </button>
+        <button
+          type="submit"
+          [disabled]="isSubmitting()"
+          class="rounded-md bg-amber-400 px-4 py-2 text-sm font-semibold text-slate-900 hover:bg-amber-300 disabled:opacity-50"
+        >
+          Cadastrar dispositivo
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+

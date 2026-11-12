@@ -1,13 +1,14 @@
-import { Component, signal } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { DeviceForm } from './components/device-form/device-form';
+import { SidebarComponent } from './components/sidebar/sidebar.component';
 
 @Component({
-  imports: [RouterOutlet, DeviceForm],
   selector: 'app-root',
-  styleUrl: './app.css',
+  standalone: true,
+  imports: [SidebarComponent, RouterOutlet],
   templateUrl: './app.html',
+  styleUrl: './app.css',
 })
-export class App {
-  protected readonly title = signal('device-checker-front');
+export class AppComponent {
+  title = 'dcm-web';
 }
