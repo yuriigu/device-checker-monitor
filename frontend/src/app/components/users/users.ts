@@ -1,7 +1,15 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  ReactiveFormsModule,
+  FormBuilder,
+  FormGroup,
+  Validators,
+  AbstractControl,
+  ValidationErrors,
+} from '@angular/forms';
 import { UserService } from '../../services/user.service';
+import { ValidationError } from '@angular/forms/signals';
 
 @Component({
   selector: 'app-users',
@@ -23,8 +31,19 @@ export class UsersComponent {
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
-      ipAddress: ['', Validators.required],
-    });
+      confirmPassword: ['', Validators.required],
+    }, {validators: this.passwordMatchValidator});
+  }
+
+  passwordMatchValidator(control: AbstractControl): ValidationErrors | null{
+    const password = control.get('password');
+    const confirmPassword = control.get('confirmPassword');
+
+    if(password && confirmPassword && password.value !== confirmPassword.value){
+      confirmPassword.setErrors({mismatch: true});
+      return {mismatch: true};
+    }
+    return null;
   }
 
   isFieldInvalid(fieldName: string): boolean {
@@ -47,7 +66,7 @@ export class UsersComponent {
     }
 
     this.isSubmitting = true;
-    const formData = this.UsersComponent.value;
+    const { confirmPassword, formData } = this.UsersComponent.value;
 
     this.userService.createUser(formData).subscribe({
       next: (response) => {

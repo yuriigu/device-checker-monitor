@@ -54,27 +54,39 @@
           </div>
         </section>
 
-        <!-- Rede e conectividade -->
+        <!-- Autenticação e segurança -->
         <section class="rounded-xl border border-slate-700/60 bg-slate-900 p-6 shadow-xl">
-          <h2 class="text-base font-semibold">Rede e conectividade</h2>
+          <h2 class="text-base font-semibold">Autenticação e segurança</h2>
           <p class="mt-1 text-xs text-slate-400">
-            Endereço principal usado nas verificações de disponibilidade.
+            Configure como o usuário acessará a plataforma.
           </p>
 
           <div class="mt-5 grid gap-4 sm:grid-cols-2">
             <label>
-              <span class="text-xs font-medium text-slate-300">Endereço IP *</span>
+              <span class="text-xs font-medium text-slate-300">Senha *</span>
               <input
-                formControlName="ipAddress"
-                type="text"
-                placeholder="Ex: 10.0.1.10"
-                [class]="fieldClass('ipAddress')"
+                formControlName="password"
+                type="password"
+                placeholder="Mínimo de 6 caracteres"
+                [class]="fieldClass('password')"
               />
-              @if (isFieldInvalid('ipAddress')) {
-              <span class="mt-1 block text-xs text-red-400">Informe um IP válido (ex: 10.0.1.10).</span>
+              @if (isFieldInvalid('password')) {
+                <span class="mt-1 block text-xs text-red-400">A senha é obrigatória (mín. 6 caracteres).</span>
               }
             </label>
 
+            <label>
+              <span class="text-xs font-medium text-slate-300">Confirmar Senha *</span>
+              <input
+                formControlName="confirmPassword"
+                type="password"
+                placeholder="Repita a senha"
+                [class]="fieldClass('confirmPassword')"
+              />
+              @if (isFieldInvalid('confirmPassword') || UsersComponent.hasError('mismatch')) {
+                <span class="mt-1 block text-xs text-red-400">As senhas não coincidem.</span>
+              }
+            </label>
           </div>
         </section>
 
