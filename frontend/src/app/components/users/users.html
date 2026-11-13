@@ -40,14 +40,16 @@
 
 
             <label>
-              <span class="text-xs font-medium text-slate-300">E-mail corporativo</span>
+              <span class="text-xs font-medium text-slate-300">E-mail corporativo *</span>
               <input
-                formControlName="idModel"
-                type="number"
-                min="1"
-                placeholder="Ex: 1"
-                [class]="fieldClass('idModel')"
+                formControlName="email"
+                type="email"
+                placeholder=" "
+                [class]="fieldClass('email')"
               />
+              @if (isFieldInvalid('email')) {
+                <span class="mt-1 block text-xs text-red-400">Informe um e-mail válido.</span>
+              }
             </label>
           </div>
         </section>
@@ -91,14 +93,12 @@
           Cancelar
         </button>
         <button
-          type="submit"
-          [disabled]="isSubmitting()"
           class="rounded-md bg-amber-400 px-4 py-2 text-sm font-semibold text-slate-900 hover:bg-amber-300 disabled:opacity-50"
         >
           Cadastrar Usuário
         </button>
+        </div>
       </div>
     </div>
   </form>
 </div>
-
