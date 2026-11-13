@@ -21,7 +21,7 @@ public record UserRequest(
 
         @NotBlank(message = "A senha é obrigatória") //senha nao pode ser nula
         @Pattern(regexp = "^.*(?=.{8,})(?=..*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).*$") //minimo 8 digitos, pelomenos 1 caracter minusculo e maiusculo, 1 numero e 1 simbolo especial
-        @Size(min = 8, max = 20) //minimo 8 maximo 20
+        @Size(min = 6, max = 20) //minimo 8 maximo 20
         String password,
 
         @NotNull(message = "O perfil do usuario é obrigatório") //perfil (role) nao pode ser nulo
