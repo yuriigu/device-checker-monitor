@@ -5,7 +5,7 @@ FROM node:22-alpine AS builder
 
 WORKDIR /build
 
-ARG API_URL=http://api:8080
+ARG API_URL=http://localhost:8080
 ENV API_URL=${API_URL}
 
 # Copia arquivos de dependência primeiro (cache de layer)
@@ -32,6 +32,6 @@ COPY --from=builder /build/node_modules node_modules
 EXPOSE 3000
 
 ENV PORT=3000
-ENV API_URL=http://api:8080
+ENV API_URL=http://localhost:8080
 
 CMD ["node", "dist/device-checker-front/server/server.mjs"]
