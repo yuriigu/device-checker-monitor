@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-users',
@@ -14,7 +15,10 @@ export class UsersComponent {
   UsersComponent: FormGroup;
   isSubmitting = false;
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private userService: UserService
+    ) {
     this.UsersComponent = this.fb.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
@@ -41,7 +45,21 @@ export class UsersComponent {
       this.UsersComponent.markAllAsTouched();
       return;
     }
-    console.log(this.UsersComponent.value);
+
+    this.isSubmitting = true;
+    const formData = this.UsersComponent.value;
+
+    this.userService.createUser(formData).subscribe({
+      next: (response) => {
+        console.log('Usuário criado com sucesso!', response);
+        this.isSubmitting = false;
+        this.UsersComponent.reset();
+      },
+      error: (err) => {
+        console.error('Erro ao criar usuário:', err);
+        this.isSubmitting = false;
+      },
+    });
   }
 
   onCancel() {
