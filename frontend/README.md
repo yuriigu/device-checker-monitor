@@ -12,7 +12,7 @@ ng serve
 
 Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
 
-The SSR server proxies `/api` requests to `http://localhost:8080` by default. When running the frontend in Docker Compose, `API_URL` defaults to `http://api:8080`, which resolves to the backend service on the Compose network.
+The SSR server proxies `/api` requests to `http://localhost:8080`. In Docker Compose, the frontend shares the backend container's network namespace so this same address works both locally and in containers.
 
 ## Code scaffolding
 

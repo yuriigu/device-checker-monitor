@@ -32,6 +32,7 @@ services:
       SPRING_JPA_HIBERNATE_DDL_AUTO: ${SPRING_JPA_HIBERNATE_DDL_AUTO}
     ports:
       - "8080:8080"
+      - "3000:3000"
     networks:
       - app-network
 
@@ -40,17 +41,14 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
       args:
-        API_URL: ${API_URL}
+        API_URL: ${API_URL:-http://localhost:8080}
     depends_on:
       - api
     environment:
       PORT: ${PORT}
-      API_URL: ${API_URL}
+      API_URL: ${API_URL:-http://localhost:8080}
       NG_ALLOWED_HOSTS: ${NG_ALLOWED_HOSTS}
-    ports:
-      - "3000:3000"
-    networks:
-      - app-network
+    network_mode: "service:api"
 
 networks:
   app-network:
