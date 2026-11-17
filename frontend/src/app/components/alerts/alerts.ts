@@ -9,7 +9,6 @@ import {
   ValidationErrors,
 } from '@angular/forms';
 import { UserService } from '../../services/user.service';
-import { ValidationError } from '@angular/forms/signals';
 
 @Component({
   selector: 'app-alerts',
@@ -29,7 +28,8 @@ export class AlertsComponent {
     ) {
     this.AlertsComponent = this.fb.group({
       name: ['', Validators.required],
-      description: ['', Validators.required],
+      user: ['', Validators.required],
+      occurrence: ['', Validators.required],
       severity: ['', Validator.required],
     });
   }
