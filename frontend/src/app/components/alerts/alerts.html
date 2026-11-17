@@ -10,7 +10,7 @@
     </p>
   </header>
 
-  <form [formGroup]="UsersComponent" (ngSubmit)="onSubmit()" novalidate class="max-w-7xl mx-auto w-full">
+  <form [formGroup]="AlertsComponent" (ngSubmit)="onSubmit()" novalidate class="max-w-7xl mx-auto w-full">
     <!-- Grelha principal de 3 colunas -->
     <div class="grid w-full grid-cols-1 gap-6 lg:grid-cols-3">
 
@@ -65,7 +65,19 @@
                 [class]="fieldClass('user')"
               />
             </label>
+          </div>
 
+
+          <div class="mt-5 grid gap-4 sm:grid-cols-2">
+            <label>
+              <span class="text-xs font-medium text-slate-300">Severidade *</span>
+              <input
+                formControlName="severity"
+                type="number"
+                placeholder=" "
+                [class]="fieldClass('severidade')"
+              />
+            </label>
           </div>
         </section>
 
@@ -92,6 +104,7 @@
           </button>
         </div>
       </div>
+    </div>
   </form>
 </div>
 
