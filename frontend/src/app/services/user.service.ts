@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class UserService {
   private readonly http = inject(HttpClient);
-  private readonly apiUrl = '/api/users';
+  private readonly apiUrl = '/api/user';
 
   constructor() {}
 
