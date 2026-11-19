@@ -46,4 +46,14 @@ public class JwtService {
     public long getExpirationSeconds() {
         return expirationMillis / 1_000;
     }
+
+    public boolean isTokenExpired(String token) {
+        try {
+            Claims claims = parseToken(token);
+            Date expiration = claims.getExpiration();
+            return expiration != null && expiration.before(new Date());
+        } catch (Exception e) {
+            return true;
+        }
+    }
 }
