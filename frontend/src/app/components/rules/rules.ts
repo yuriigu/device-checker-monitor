@@ -8,7 +8,7 @@ import {
   AbstractControl,
   ValidationErrors,
 } from '@angular/forms';
-import { UserService } from '../../services/user.service';
+import { RulesService } from '../../services/rules.service';
 
 @Component({
   selector: 'app-rules',
