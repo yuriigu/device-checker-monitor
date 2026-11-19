@@ -1,0 +1,55 @@
+<main class="flex min-h-screen items-center justify-center bg-slate-950 px-4 py-10 text-slate-100">
+  <section class="w-full max-w-md rounded-2xl border border-slate-800 bg-slate-900 p-8 shadow-2xl">
+    <div class="mb-8 text-center">
+      <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-amber-400 text-xl font-bold text-slate-950">
+        D
+      </div>
+      <h1 class="mt-5 text-2xl font-semibold">Entrar no sistema</h1>
+      <p class="mt-2 text-sm text-slate-400">Use seu e-mail, telefone ou nome de usuário.</p>
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" novalidate class="space-y-5">
+      <label class="block">
+        <span class="text-sm font-medium text-slate-300">Login</span>
+        <input
+          formControlName="login"
+          type="text"
+          autocomplete="username"
+          placeholder="E-mail, telefone ou nome de usuário"
+          class="mt-2 block w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2.5 text-sm text-slate-100 placeholder-slate-500 focus:border-amber-400 focus:outline-none focus:ring-1 focus:ring-amber-400"
+        />
+        @if (loginForm.controls['login'].invalid && loginForm.controls['login'].touched) {
+          <span class="mt-1 block text-xs text-red-400">Informe seu e-mail, telefone ou nome de usuário.</span>
+        }
+      </label>
+
+      <label class="block">
+        <span class="text-sm font-medium text-slate-300">Senha</span>
+        <input
+          formControlName="password"
+          type="password"
+          autocomplete="current-password"
+          placeholder="Sua senha"
+          class="mt-2 block w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2.5 text-sm text-slate-100 placeholder-slate-500 focus:border-amber-400 focus:outline-none focus:ring-1 focus:ring-amber-400"
+        />
+        @if (loginForm.controls['password'].invalid && loginForm.controls['password'].touched) {
+          <span class="mt-1 block text-xs text-red-400">A senha é obrigatória.</span>
+        }
+      </label>
+
+      @if (errorMessage()) {
+        <p role="alert" class="rounded-lg border border-red-500/30 bg-red-500/10 px-3 py-2 text-sm text-red-300">
+          {{ errorMessage() }}
+        </p>
+      }
+
+      <button
+        type="submit"
+        [disabled]="loginForm.invalid || isSubmitting()"
+        class="w-full rounded-lg bg-amber-400 px-4 py-2.5 text-sm font-semibold text-slate-950 transition hover:bg-amber-300 disabled:cursor-not-allowed disabled:opacity-50"
+      >
+        {{ isSubmitting() ? 'Entrando...' : 'Entrar' }}
+      </button>
+    </form>
+  </section>
+</main>

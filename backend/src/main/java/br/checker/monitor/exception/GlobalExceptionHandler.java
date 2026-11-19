@@ -4,6 +4,8 @@ import jakarta.validation.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -48,6 +50,12 @@ public class GlobalExceptionHandler {
                 .body(new ErrorResponse(ex.getMessage(), null));
     }
 
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<ErrorResponse> handleBadCredentials(BadCredentialsException ex) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(new ErrorResponse("Credenciais inválidas", null));
+    }
+
     /**
      * Captura falhas de validacao do Bean Validation (@NotBlank, @NotNull, etc.)
      * quando um DTO anotado com @Valid falha.
@@ -86,10 +94,24 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * Fallback para qualquer excecao nao tratada -> HTTP 500.
+     * Captura JSON malformado ou campo com tipo errado (ex.: "idPlace": "abc") -> HTTP 400.
+     */
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ErrorResponse> handleUnreadable(HttpMessageNotReadableException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ErrorResponse("Corpo da requisicao invalido (JSON malformado ou campo com tipo errado)", null));
+    }
+
+    /**
+     * Fallback para qualquer excecao nao tratada.
      */
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGenericException(Exception ex) {
+        if (ex instanceof org.springframework.web.ErrorResponse springError) {
+            return ResponseEntity.status(springError.getStatusCode())
+                    .headers(springError.getHeaders())
+                    .body(new ErrorResponse(ex.getMessage(), null));
+        }
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(new ErrorResponse("Erro interno do servidor: " + ex.getMessage(), null));
     }

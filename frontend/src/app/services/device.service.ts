@@ -8,8 +8,7 @@ import { Observable } from 'rxjs';
 export class DeviceService {
   private readonly http = inject(HttpClient);
 
-  // URL relativa: o navegador chama http://localhost:4000/api/devices (mesma origem do web container)
-  // e o Express/SSR faz proxy para http://api:8080 via rede Docker.
+  // O Express/SSR encaminha /api para API_URL; o padrao local e localhost:8080.
   private readonly apiUrl = '/api/devices';
 
   constructor() {}
