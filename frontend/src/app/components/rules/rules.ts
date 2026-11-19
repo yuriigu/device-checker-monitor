@@ -30,7 +30,7 @@ export class RulesComponent {
       name: ['', Validators.required],
       user: ['', Validators.required],
       occurrence: ['', Validators.required],
-      severity: ['', Validator.required],
+      severity: ['', Validators.required],
     });
   }
 
@@ -54,9 +54,7 @@ export class RulesComponent {
     }
 
     this.isSubmitting = true;
-    const { formData } = this.RulesComponent.value;
-
-    this.rulesService.createRule(formData).subscribe({
+    this.rulesService.createRule(this.RulesComponent.value).subscribe({
       next: (response) => {
         console.log('Regra criada com sucesso!', response);
         this.isSubmitting = false;
@@ -70,6 +68,6 @@ export class RulesComponent {
   }
 
   onCancel() {
-    this.RuleComponent.reset();
+    this.RulesComponent.reset();
   }
 }
