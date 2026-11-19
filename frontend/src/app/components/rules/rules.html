@@ -2,15 +2,15 @@
   <!-- Cabeçalho interno da página -->
   <header class="mb-8 max-w-7xl mx-auto">
     <p class="text-xs font-medium uppercase tracking-wider text-slate-500">
-      Alertas
+      Regras
     </p>
-    <h1 class="mt-1 text-3xl font-semibold">Cadastrar alerta ou ticket</h1>
+    <h1 class="mt-1 text-3xl font-semibold">Cadastrar regra</h1>
     <p class="mt-1 text-sm text-slate-400">
       Registre um incidente, vincule o ativo e direcione o atendimento.
     </p>
   </header>
 
-  <form [formGroup]="AlertsComponent" (ngSubmit)="onSubmit()" novalidate class="max-w-7xl mx-auto w-full">
+  <form [formGroup]="RulesComponent" (ngSubmit)="onSubmit()" novalidate class="max-w-7xl mx-auto w-full">
     <!-- Grelha principal de 3 colunas -->
     <div class="grid w-full grid-cols-1 gap-6 lg:grid-cols-3">
 

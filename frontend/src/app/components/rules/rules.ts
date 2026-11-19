@@ -11,22 +11,22 @@ import {
 import { UserService } from '../../services/user.service';
 
 @Component({
-  selector: 'app-alerts',
+  selector: 'app-rules',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: './alerts.html',
-  styleUrl: './alerts.css',
+  templateUrl: './rules.html',
+  styleUrl: './rules.css',
 })
 
-export class AlertsComponent {
-  UsersComponent: FormGroup;
+export class RulesComponent {
+  RulesComponent: FormGroup;
   isSubmitting = false;
 
   constructor(
     private fb: FormBuilder,
-    private alertsService: AlertsService
+    private rulesService: RulesService
     ) {
-    this.AlertsComponent = this.fb.group({
+    this.RulesComponent = this.fb.group({
       name: ['', Validators.required],
       user: ['', Validators.required],
       occurrence: ['', Validators.required],
@@ -35,7 +35,7 @@ export class AlertsComponent {
   }
 
   isFieldInvalid(fieldName: string): boolean {
-    const field = this.UsersComponent.get(fieldName);
+    const field = this.RulesComponent.get(fieldName);
     return !!(field && field.invalid && (field.dirty || field.touched));
   }
 
@@ -48,28 +48,28 @@ export class AlertsComponent {
   }
 
   onSubmit() {
-    if (this.AlertsComponent.invalid) {
-      this.AlertsComponent.markAllAsTouched();
+    if (this.RulesComponent.invalid) {
+      this.RulesComponent.markAllAsTouched();
       return;
     }
 
     this.isSubmitting = true;
-    const { formData } = this.AlertsComponent.value;
+    const { formData } = this.RulesComponent.value;
 
-    this.alertsService.createAlert(formData).subscribe({
+    this.rulesService.createRule(formData).subscribe({
       next: (response) => {
-        console.log('Alerta criado com sucesso!', response);
+        console.log('Regra criada com sucesso!', response);
         this.isSubmitting = false;
-        this.AlertsComponent.reset();
+        this.RulesComponent.reset();
       },
       error: (err) => {
-        console.error('Erro ao criar alerta:', err);
+        console.error('Erro ao criar regra:', err);
         this.isSubmitting = false;
       },
     });
   }
 
   onCancel() {
-    this.AlertComponent.reset();
+    this.RuleComponent.reset();
   }
 }
