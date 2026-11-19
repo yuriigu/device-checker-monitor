@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import br.checker.monitor.enums.RoleType;
 
 //DTO para cadastro de usuario(User)
 
@@ -25,7 +26,7 @@ public record UserRequest(
         String password,
 
         @NotNull(message = "O perfil do usuario é obrigatório") //perfil (role) nao pode ser nulo
-        Long role
+        RoleType role
 
 ) {
 }
