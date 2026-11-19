@@ -1,8 +1,7 @@
 package br.checker.monitor.model;
 
 import jakarta.persistence.*;
-import java.util.Objects;
-
+import br.checker.monitor.enums.RoleType;
 
 @Entity
 @Table(name = "users")
@@ -24,9 +23,9 @@ public class User {
     @Column(name = "password", length = 255)
     private String password;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "id_role", nullable = false)
-    private Role role;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role", nullable = false)
+    private RoleType role;
 
     public User() {
 
@@ -72,11 +71,11 @@ public class User {
         this.password = password;
     }
 
-    public Role getRole() {
+    public RoleType getRole() {
         return role;
     }
 
-    public void setRole(Role role) {
+    public void setRole(RoleType role) {
         this.role = role;
     }
 

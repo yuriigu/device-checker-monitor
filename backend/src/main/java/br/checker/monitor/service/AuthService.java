@@ -39,12 +39,12 @@ public class AuthService {
                 .filter(candidate -> passwordEncoder.matches(request.password(), candidate.getPassword()))
                 .orElseThrow(() -> new BadCredentialsException("Credenciais inválidas"));
 
-        String token = jwtService.generateToken(user.getEmail(), user.getRole().getName());
+        String token = jwtService.generateToken(user.getEmail(), user.getRole().name());
         return new LoginResponse(
                 token,
                 user.getName(),
                 user.getEmail(),
-                user.getRole().getName(),
+                user.getRole().name(),
                 jwtService.getExpirationSeconds()
         );
     }
@@ -65,13 +65,12 @@ public class AuthService {
                 throw new BadCredentialsException("Invalid token: subject is null");
             }
 
-            // Verify the token is not expired by checking the expiration date
+            // verifica se o token já está expirado
             Date expiration = claims.getExpiration();
             if (expiration == null || expiration.before(new java.util.Date())) {
                 throw new BadCredentialsException("Token has expired");
             }
 
-            // Generate a new token with the same subject and role
             String newToken = jwtService.generateToken(subject, claims.get("role", String.class));
 
             return new RefreshTokenResponse(newToken, "Token refreshed successfully");
