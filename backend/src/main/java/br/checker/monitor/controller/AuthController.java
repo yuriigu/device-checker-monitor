@@ -2,6 +2,8 @@ package br.checker.monitor.controller;
 
 import br.checker.monitor.dto.LoginRequest;
 import br.checker.monitor.dto.LoginResponse;
+import br.checker.monitor.dto.RefreshTokenRequest;
+import br.checker.monitor.dto.RefreshTokenResponse;
 import br.checker.monitor.service.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -23,5 +25,10 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest request) {
         return ResponseEntity.ok(authService.login(request));
+    }
+
+    @PostMapping("/refresh-token")
+    public ResponseEntity<RefreshTokenResponse> refreshToken(@Valid @RequestBody RefreshTokenRequest request) {
+        return ResponseEntity.ok(authService.refreshToken(request));
     }
 }
