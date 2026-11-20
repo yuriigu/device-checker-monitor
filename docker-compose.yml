@@ -37,7 +37,7 @@ services:
       SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
       SPRING_JPA_HIBERNATE_DDL_AUTO: ${SPRING_JPA_HIBERNATE_DDL_AUTO}
     ports:
-      - "8080:8080"
+      - "8081:8081"
     networks:
       - app-network
     container_name: dcm-api

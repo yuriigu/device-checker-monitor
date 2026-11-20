@@ -1,3 +1,4 @@
+
 package br.checker.monitor.service;
 
 import br.checker.monitor.dto.UserResponse;
@@ -7,8 +8,7 @@ import br.checker.monitor.dto.DeviceSummaryResponse;
 import br.checker.monitor.exception.BusinessRuleException;
 import br.checker.monitor.exception.ResourceNotFoundException;
 import br.checker.monitor.model.User;
-import br.checker.monitor.model.Role;
-import br.checker.monitor.repository.RoleRepository;
+import br.checker.monitor.enums.RoleType;
 import br.checker.monitor.repository.UserRepository;
 
 import org.springframework.stereotype.Service;
@@ -22,13 +22,11 @@ import java.util.stream.Collectors;
 @Service
 public class UserService {
     private final UserRepository userRepository;          //declarando variaveis
-    private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
-            this.userRepository = userRepository;
-            this.roleRepository = roleRepository;
-            this.passwordEncoder = passwordEncoder;
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Transactional
@@ -43,7 +41,7 @@ public class UserService {
                     "Esse email já pertence á alguem: " + request.email());
         }
 
-        Role role = roleRepository.findById(request.role()).orElseThrow(() -> new ResourceNotFoundException("Role não encontrada")); //busco a role atraves do ID obtido pelo metodo
+        RoleType role = request.role(); //obtendo o tipo de role diretamente do enum recebido pelo request
 
         String passwordHash = passwordEncoder.encode(request.password()); //pega a senha em plain text e criptografa ela.
 
@@ -56,7 +54,7 @@ public class UserService {
 
         User savedUser = userRepository.save(user); //usando o service para salvar o usuario criado anteriormente
 
-        return new UserResponse(savedUser.getId(), savedUser.getName(), savedUser.getEmail(), savedUser.getRole().getName());
+        return new UserResponse(savedUser.getId(), savedUser.getName(), savedUser.getEmail(), savedUser.getRole());
 
     }
 
@@ -65,7 +63,7 @@ public class UserService {
 
         User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Usuario nao encontrado"));
 
-        return new UserResponse(user.getId(), user.getName(), user.getEmail(), user.getRole().getName());
+        return new UserResponse(user.getId(), user.getName(), user.getEmail(), user.getRole());
     }
 
     @Transactional(readOnly = true) //como é só busca, nao é necessario escrever no db.
@@ -83,7 +81,7 @@ public class UserService {
                         user.getId(),
                         user.getName(),
                         user.getEmail(),
-                        user.getRole().getName()
+                        user.getRole()
                 ))
                 .toList();
 
@@ -98,14 +96,14 @@ public class UserService {
             throw new BusinessRuleException("Esse email já pertence a outro usuário: " + request.email());
         }
 
-        Role role = roleRepository.findById(request.role()).orElseThrow(() -> new ResourceNotFoundException("Role não encontrada")); //aqui ele vai obter a Role nova
+        RoleType role = request.role(); //obtendo a nova role diretamente do enum recebido pelo request
 
         user.setEmail(request.email()); //atualizando email da instancia
         user.setRole(role); // atualizando role da instancia
 
         User updatedUser = userRepository.save(user); // salvando no db as atualizacoes do user.
 
-        return new UserResponse(updatedUser.getId(), updatedUser.getName(), updatedUser.getEmail(), updatedUser.getRole().getName());
+        return new UserResponse(updatedUser.getId(), updatedUser.getName(), updatedUser.getEmail(), updatedUser.getRole());
 
     }
 
