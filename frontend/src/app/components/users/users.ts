@@ -9,7 +9,6 @@ import {
   ValidationErrors,
 } from '@angular/forms';
 import { UserService } from '../../services/user.service';
-import { ValidationError } from '@angular/forms/signals';
 
 @Component({
   selector: 'app-users',
@@ -26,12 +25,13 @@ export class UsersComponent {
   constructor(
     private fb: FormBuilder,
     private userService: UserService
-    ) {
+  ) {
     this.UsersComponent = this.fb.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       confirmPassword: ['', Validators.required],
+      role: ['', Validators.required],
     }, {validators: this.passwordMatchValidator});
   }
 
@@ -66,7 +66,9 @@ export class UsersComponent {
     }
 
     this.isSubmitting = true;
-    const { confirmPassword, formData } = this.UsersComponent.value;
+
+    const formData = this.UsersComponent.getRawValue();
+    delete formData.confirmPassword;
 
     this.userService.createUser(formData).subscribe({
       next: (response) => {
