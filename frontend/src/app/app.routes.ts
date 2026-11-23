@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import { DeviceForm } from './components/device-form/device-form';
 import { DashboardComponent } from './components/dashboard/dashboard';
-import { RulesComponent } from './components/alerts/alerts';
+import { RulesComponent } from './components/rules/rules';
 import { InventoryComponent } from './components/inventory/inventory';
 import { ReportsComponent } from './components/reports/reports';
 import { UsersComponent } from './components/users/users';
