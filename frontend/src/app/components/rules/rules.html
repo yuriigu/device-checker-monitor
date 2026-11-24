@@ -71,12 +71,18 @@
           <div class="mt-5 grid gap-4 sm:grid-cols-2">
             <label>
               <span class="text-xs font-medium text-slate-300">Severidade *</span>
-              <input
+              <select
                 formControlName="severity"
-                type="number"
-                placeholder=" "
                 [class]="fieldClass('severity')"
-              />
+              >
+                <option value="" disabled selected>Selecione a severidade</option>
+                @for (sev of severities; track sev.value) {
+                  <option [value]="sev.value">{{ sev.label }}</option>
+                }
+              </select>
+              @if (isFieldInvalid('severity')) {
+                <span class="mt-1 block text-xs text-red-400">Selecione uma severidade.</span>
+              }
             </label>
           </div>
         </section>
