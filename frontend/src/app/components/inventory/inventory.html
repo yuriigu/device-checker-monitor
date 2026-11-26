@@ -1,4 +1,162 @@
-<div class="p-6">
-  <h1 class="text-2xl font-bold text-gray-800">Inventory</h1>
-  <p class="text-gray-600 mt-2">Inventario.</p>
+<div class="min-h-full bg-slate-950 p-6 md:p-10 text-slate-100">
+  <!-- Cabeçalho interno da página -->
+  <header class="mb-8 max-w-7xl mx-auto">
+    <p class="text-xs font-medium uppercase tracking-wider text-slate-500">
+      Inventário
+    </p>
+    <h1 class="mt-1 text-3xl font-semibold">Inventário de Dispositivos</h1>
+    <p class="mt-1 text-sm text-slate-400">
+      Acompanhe dispositivos, relatórios e usuários para monitoramento de ativos.
+    </p>
+  </header>
+
+  <!-- Grid principal: coluna Dispositivos -->
+  <div class="grid w-full grid-cols-1 gap-6 lg:grid-cols-3">
+
+    <div class="lg:col-span-1 space-y-6">
+      <section class="rounded-xl border border-slate-700/60 bg-slate-900 p-6 shadow-xl">
+        <h2 class="text-base font-semibold">Dispositivos</h2>
+        <p class="mt-1 text-xs text-slate-400">
+          Total de dispositivos cadastrados no sistema.
+        </p>
+        <div class="mt-6 flex items-baseline gap-2">
+          <span class="text-4xl font-bold text-amber-400">{{ devices.length }}</span>
+          <span class="text-sm text-slate-500">ativos</span>
+        </div>
+      </section>
+
+      <section class="rounded-xl border border-slate-700/60 bg-slate-900 p-6 shadow-xl">
+        <h2 class="text-base font-semibold mb-4">Lista de Dispositivos</h2>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="border-b border-slate-700/40">
+                <th class="pb-2 text-xs font-semibold text-slate-400 uppercase">Nome</th>
+                <th class="pb-2 text-xs font-semibold text-slate-400 uppercase">IP</th>
+                <th class="pb-2 text-xs font-semibold text-slate-400 uppercase">Marca</th>
+                <th class="pb-2 text-xs font-semibold text-slate-400 uppercase">Modelo</th>
+                <th class="pb-2 text-xs font-semibold text-slate-400 uppercase">Local</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let device of devices"
+                  class="border-b border-slate-800/60 hover:bg-slate-800/50 transition">
+                <td class="py-3 text-sm text-slate-200">{{ device.name }}</td>
+                <td class="py-3 text-sm text-slate-300">{{ device.ipAddress }}</td>
+                <td class="py-3 text-sm text-slate-300">{{ device.brandName }}</td>
+                <td class="py-3 text-sm text-slate-300">{{ device.modelName }}</td>
+                <td class="py-3 text-sm text-slate-300">{{ device.placeName }}</td>
+              </tr>
+              <tr *ngIf="devices.length === 0">
+                <td colspan="5" class="py-4 text-center text-sm text-slate-500">Nenhum dispositivo cadastrado.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+
+    <!-- Coluna Usuários e Reports -->
+    <div class="lg:col-span-2 space-y-6">
+
+      <!-- Usuários -->
+      <section class="rounded-xl border border-slate-700/60 bg-slate-900 p-6 shadow-xl">
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <h2 class="text-base font-semibold">Usuários</h2>
+            <p class="mt-1 text-xs text-slate-400">
+              Acompanhe usuários cadastrados e seus perfis de acesso.
+            </p>
+          </div>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="border-b border-slate-700/40">
+                <th class="pb-2 text-xs font-semibold text-slate-400 uppercase">Nome</th>
+                <th class="pb-2 text-xs font-semibold text-slate-400 uppercase">E-mail</th>
+                <th class="pb-2 text-xs font-semibold text-slate-400 uppercase">Perfil</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let user of users"
+                  class="border-b border-slate-800/60 hover:bg-slate-800/50 transition">
+                <td class="py-3 text-sm text-slate-200">{{ user.name }}</td>
+                <td class="py-3 text-sm text-slate-300">{{ user.email }}</td>
+                <td class="py-3 text-sm">
+                  <span class="inline-flex items-center rounded-full px-2 py-1 text-xs font-medium"
+                        [ngClass]="user.role === 'ADMIN' ? 'bg-amber-500/10 text-amber-400 border border-amber-500/20' : 'bg-slate-700/50 text-slate-400 border border-slate-700'">
+                    {{ user.role }}
+                  </span>
+                </td>
+              </tr>
+              <tr *ngIf="users.length === 0">
+                <td colspan="3" class="py-4 text-center text-sm text-slate-500">Nenhum usuário cadastrado.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Reports / Monitoramento -->
+      <section class="rounded-xl border border-slate-700/60 bg-slate-900 p-6 shadow-xl">
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <h2 class="text-base font-semibold">Reports de Monitoramento</h2>
+            <p class="mt-1 text-xs text-slate-400">
+              Resumo dos relatórios e alertas do sistema.
+            </p>
+          </div>
+        </div>
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div class="rounded-lg border border-slate-800 bg-slate-800/50 p-4">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-xs font-medium text-slate-400 uppercase">Alertas Críticos</p>
+                <p class="mt-1 text-2xl font-bold text-red-400">{{ reports.criticalAlerts }}</p>
+              </div>
+              <div class="w-8 h-8 rounded-full bg-red-500/20 flex items-center justify-center">
+                <svg class="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.859-3.207l-3.104-7.523a1.37 1.37 0 00-1.425-1.425l-7.523-3.104a1.37 1.37 0 00-1.425-1.425l-3.104-7.523A1.37 1.37 0 003.34 1.479l-3.104 7.523c-.643 1.54.319 3.207 1.859 3.207h13.856z"/></svg>
+              </div>
+            </div>
+          </div>
+          <div class="rounded-lg border border-slate-800 bg-slate-800/50 p-4">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-xs font-medium text-slate-400 uppercase">Dispositivos Offline</p>
+                <p class="mt-1 text-2xl font-bold text-amber-400">{{ reports.offlineDevices }}</p>
+              </div>
+              <div class="w-8 h-8 rounded-full bg-amber-500/20 flex items-center justify-center">
+                <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              </div>
+            </div>
+          </div>
+          <div class="rounded-lg border border-slate-800 bg-slate-800/50 p-4">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-xs font-medium text-slate-400 uppercase">Relatórios Gerados</p>
+                <p class="mt-1 text-2xl font-bold text-emerald-400">{{ reports.reportsGenerated }}</p>
+              </div>
+              <div class="w-8 h-8 rounded-full bg-emerald-500/20 flex items-center justify-center">
+                <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+              </div>
+            </div>
+          </div>
+          <div class="rounded-lg border border-slate-800 bg-slate-800/50 p-4">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-xs font-medium text-slate-400 uppercase">Uptime Médio</p>
+                <p class="mt-1 text-2xl font-bold text-slate-200">{{ reports.uptime }}</p>
+              </div>
+              <div class="w-8 h-8 rounded-full bg-slate-700/50 flex items-center justify-center">
+                <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+  </div>
 </div>
