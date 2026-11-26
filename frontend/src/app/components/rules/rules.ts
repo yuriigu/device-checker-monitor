@@ -22,6 +22,11 @@ export class RulesComponent {
   RulesComponent: FormGroup;
   isSubmitting = false;
 
+  severities = [
+    {label: 'Informativo', value: 'informativo'},
+    {label: 'Aviso', value: 'aviso'},
+    {label: 'Crítico', value: 'crítico'},
+  ];
   constructor(
     private fb: FormBuilder,
     private rulesService: RulesService
