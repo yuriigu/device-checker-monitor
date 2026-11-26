@@ -17,6 +17,12 @@ services:
       retries: 10
     networks:
       - app-network
+    container_name: dcm-db
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: 3
 
   api:
     build:
@@ -31,24 +37,55 @@ services:
       SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
       SPRING_JPA_HIBERNATE_DDL_AUTO: ${SPRING_JPA_HIBERNATE_DDL_AUTO}
     ports:
-      - "8080:8080"
-      - "3000:3000"
+      - "8081:8080"
     networks:
       - app-network
+    container_name: dcm-api
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: 3
 
   web:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-      args:
-        API_URL: ${API_URL:-http://localhost:8080}
     depends_on:
       - api
     environment:
       PORT: ${PORT}
-      API_URL: ${API_URL:-http://localhost:8080}
+      API_URL: http://api:8080
       NG_ALLOWED_HOSTS: ${NG_ALLOWED_HOSTS}
-    network_mode: "service:api"
+    ports:
+      - "${PORT}:3000"
+    networks:
+      - app-network
+    container_name: dcm-web
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: 3
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin@example.com}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin123}
+      PGADMIN_PORT: ${PGADMIN_PORT:-5050}
+    ports:
+      - "${PGADMIN_PORT}:80"
+    depends_on:
+      - db
+    networks:
+      - app-network
+    container_name: dcm-pgadmin
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: 3
 
 networks:
   app-network:

@@ -49,12 +49,15 @@
                   "maximumError": "8kB"
                 }
               ],
-              "outputHashing": "all"
+              "outputMode": "server",
+              "outputHashing": "all",
+              "tsConfig": "tsconfig.app.json"
             },
             "development": {
               "optimization": false,
               "extractLicenses": false,
-              "sourceMap": true
+              "sourceMap": true,
+              "tsConfig": "tsconfig.app.json"
             }
           },
           "defaultConfiguration": "production"

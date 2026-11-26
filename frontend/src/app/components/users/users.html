@@ -1,3 +1,4 @@
+
 <div class="min-h-full bg-slate-950 p-6 md:p-10 text-slate-100">
   <!-- Cabeçalho interno da página -->
   <header class="mb-8 max-w-7xl mx-auto">
@@ -34,10 +35,9 @@
                 [class]="fieldClass('name')"
               />
               @if (isFieldInvalid('name')) {
-              <span class="mt-1 block text-xs text-red-400">O campo Nome é obrigatório.</span>
+                <span class="mt-1 block text-xs text-red-400">O campo Nome é obrigatório.</span>
               }
             </label>
-
 
             <label>
               <span class="text-xs font-medium text-slate-300">E-mail corporativo *</span>
@@ -49,6 +49,23 @@
               />
               @if (isFieldInvalid('email')) {
                 <span class="mt-1 block text-xs text-red-400">Informe um e-mail válido.</span>
+              }
+            </label>
+
+            <label>
+              <span class="text-xs font-medium text-slate-300">Perfil de acesso *</span>
+              <select
+                formControlName="role"
+                [class]="fieldClass('role')"
+              >
+                <option value="" disabled>Selecione um perfil</option>
+                <option value="USER">Usuário</option>
+                <option value="ADMIN">Administrador</option>
+              </select>
+              @if (isFieldInvalid('role')) {
+                <span class="mt-1 block text-xs text-red-400">
+                  Selecione um perfil de acesso.
+                </span>
               }
             </label>
           </div>

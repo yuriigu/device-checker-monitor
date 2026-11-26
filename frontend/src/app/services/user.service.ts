@@ -5,9 +5,10 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
+
 export class UserService {
   private readonly http = inject(HttpClient);
-  private readonly apiUrl = '/api/users';
+  private readonly apiUrl = '/api/user';
 
   constructor() {}
 
