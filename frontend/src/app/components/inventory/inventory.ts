@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { DeviceService } from '../../../services/device.service';
 import { UserService } from '../../../services/user.service';
 
+//Summary para apresentação
 export interface DeviceSummary {
   id: number;
   name: string;
