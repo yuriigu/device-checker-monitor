@@ -17,6 +17,9 @@ public record RuleRequest(
         @NotNull(message = "A severidade da regra é obrigatória") //severidade nao pode ser nula
         RuleSeverity severity,
 
+        @NotNull(message = "O requerente da regra é obrigatório")
+        String requester;
+
         boolean applyToAll
 ) {
 }

@@ -21,6 +21,9 @@ public class Rule {
     @Column(name = "severity", length = 20, nullable = false)
     private RuleSeverity severity;
 
+    @Column(name = "requester", lenght = 255, nullable = false)
+    private String requester;
+
     // flag booleana para dizer se a regra é aplicavel ou nao a todos
     @Column(name = "apply_to_all", nullable = false)
     private boolean applyToAll = false;
@@ -43,6 +46,9 @@ public class Rule {
 
     public RuleSeverity getSeverity() { return severity; }
     public void setSeverity(RuleSeverity severity) { this.severity = severity; }
+
+    public String getRequester() { return requester; }
+    public void setRequester(String requester) this.requester = requester; }
 
     public boolean isApplyToAll() { return applyToAll; }
     public void setApplyToAll(boolean applyToAll) { this.applyToAll = applyToAll; }
