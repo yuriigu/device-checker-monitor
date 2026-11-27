@@ -1,7 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DeviceService } from '../../../services/device.service';
-import { UserService } from '../../../services/user.service';
+import { DeviceService } from '../../services/device.service';
+import { UserService } from '../../services/user.service';
 
 //Summary para apresentação
 export interface DeviceSummary {
